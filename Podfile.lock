@@ -21,13 +21,18 @@ PODS:
   - BDBOAuth1Manager (1.2.1):
     - AFNetworking/NSURLConnection (~> 2.2.0)
     - AFNetworking/NSURLSession (~> 2.2.0)
+  - Mantle (1.5):
+    - Mantle/extobjc
+  - Mantle/extobjc (1.5)
 
 DEPENDENCIES:
   - AFNetworking (= 2.2.1)
   - BDBOAuth1Manager
+  - Mantle
 
 SPEC CHECKSUMS:
   AFNetworking: 8dde8c8a6597ad95dac332a593c27e541bc87371
   BDBOAuth1Manager: 55c7390b5018cac757e322ad8f9ab782b0f9fd01
+  Mantle: c67a7e45e14196ed42b2a7cbb98ff6a9920e6b92
 
 COCOAPODS: 0.33.1

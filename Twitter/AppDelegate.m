@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "LoginViewController.h"
 #import "TwitterClient.h"
+#import "TweetsViewController.h"
 
 @implementation NSURL (dictionaryFromQueryString)
 
@@ -38,6 +39,7 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
+    
     
     self.window.rootViewController = [[LoginViewController alloc] init];
     
@@ -89,11 +91,18 @@
                     NSLog(@"access token");
                     [client.requestSerializer saveAccessToken:accessToken];
                     
-                    [client homeTimelineWithSuccess:^ (AFHTTPRequestOperation *operation, id responseObject){
-                        NSLog(@"response: %@", responseObject);
-                    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-                        NSLog(@"response error: %@", error);
-                    }];
+                    //[client homeTimelineWithSuccess:^ (AFHTTPRequestOperation *operation, id responseObject){
+                    //    NSLog(@"response: %@", responseObject);
+                    
+                    TweetsViewController *tweetsViewController = [[TweetsViewController alloc] init];
+                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tweetsViewController];
+                    navigationController.navigationBar.barTintColor = [UIColor lightGrayColor];
+                    
+                    self.window.rootViewController = navigationController;
+                    
+                    //} failure:^(AFHTTPRequestOperation *operation, NSError *error){
+                    //    NSLog(@"response error: %@", error);
+                    //}];
                      
                     
                     

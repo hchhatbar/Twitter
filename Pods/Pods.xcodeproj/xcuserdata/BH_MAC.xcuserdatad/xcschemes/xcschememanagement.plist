@@ -14,6 +14,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-Mantle.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -22,17 +27,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>86FA6BA20FC14041BC99ACEB</key>
+		<key>2B15C65C3FE5493485AFA611</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B4DF93E77A014DECB76EFEA5</key>
+		<key>78E2E0147F244AAEB1344F1E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B94A06A7EFBC4793AC989493</key>
+		<key>8A01701420644390B4798FB0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FF551E1BF2C444EABF58ADD1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
