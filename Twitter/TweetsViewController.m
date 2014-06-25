@@ -12,11 +12,18 @@
 #import "Tweet.h"
 #import <UIImageView+AFNetworking.h>
 #import "ComposeTweetViewController.h"
+#import "LoginViewController.h"
+
 
 @interface TweetsViewController ()
 @property (nonatomic,strong) NSMutableArray *tweetsArray;
 @property (weak, nonatomic) IBOutlet UITableView *displayView;
 @property Tweet *tweetModel;
+@property (nonatomic,strong) NSMutableArray *tweetInfo;
+@property TwitterClient *client;
+@property UIRefreshControl *refreshControl;
+
+- (void)getTweets;
 
 @end
 
@@ -26,19 +33,9 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        self.title = @"Home";
         // Custom initialization
-        TwitterClient *client = [TwitterClient instance];
-        [client homeTimelineWithSuccess:^ (AFHTTPRequestOperation *operation, id responseObject){
-            NSLog(@"tweets table view controller");
-            //NSLog(@"response: %@", responseObject);
-            self.tweetsArray = responseObject;
-            //NSLog(@"array count: %d", [self.tweetsArray count]);
-            //NSLog(@"%@", self.tweetsArray[1]);
-            [self.displayView reloadData];
-        
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-            NSLog(@"response error: %@", error);
-        }];
+        self.client = [TwitterClient instance];
         
     }
     return self;
@@ -48,7 +45,7 @@
 
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button setFrame:CGRectMake(65,20,200,40)];
+    [button setFrame:CGRectMake(250,20,50,40)];
     [button setTitle:@"New" forState:UIControlStateNormal];
     [button setTintColor:[UIColor redColor]];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -59,10 +56,35 @@
     button.layer.cornerRadius = 4.0f;
     [self.navigationController.view addSubview:button];
     
+    
+    UIButton *logOutButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [logOutButton setFrame:CGRectMake(25,20,75,40)];
+    [logOutButton setTitle:@"Sign Out" forState:UIControlStateNormal];
+    [logOutButton setTintColor:[UIColor redColor]];
+    [logOutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [logOutButton addTarget:self action:@selector(logOutClickEvent:) forControlEvents:UIControlEventTouchUpInside];
+    logOutButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+    logOutButton.layer.borderColor = [UIColor clearColor].CGColor;
+    logOutButton.layer.borderWidth = 1.0f;
+    logOutButton.layer.cornerRadius = 4.0f;
+    [self.navigationController.view addSubview:logOutButton];
+    
+    
+}
+
+- (void)logOutClickEvent: (id) sender {
+
+    [self.client deauthorize];
+     LoginViewController *viewController = [[LoginViewController alloc] init];
+     self.navigationController.navigationBar.hidden = YES;
+    [self.navigationController pushViewController:viewController animated:YES];
+    
+  
 }
 
 - (void)newTweetClickEvent: (id) sender {
     NSLog(@"%@", @"New Tweet Pressed");
+    
     ComposeTweetViewController *composeTweetViewController = [[ComposeTweetViewController alloc] init];
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:composeTweetViewController];
@@ -77,16 +99,49 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    UITableViewController *tableViewController = [[UITableViewController alloc] init];
+    tableViewController.tableView = self.displayView;
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(onRefresh:) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refreshing data..."];
+    tableViewController.refreshControl = self.refreshControl;
+
     // Do any additional setup after loading the view from its nib.
         [self addNewTweetButton];
+    
+    [self getTweets];
+}
+
+- (void)onRefresh:(id)sender
+{
+    [self getTweets];
+    NSLog(@"refresh");
+    [self.refreshControl endRefreshing];
+    
+}
+
+-(void)getTweets{
+    
+    [self.client homeTimelineWithSuccess:^ (AFHTTPRequestOperation *operation, id responseObject){
+        NSLog(@"tweets table view controller");
+        NSLog(@"response: %@", responseObject);
+        self.tweetsArray = responseObject;
+        //NSLog(@"array count: %d", [self.tweetsArray count]);
+        //NSLog(@"%@", self.tweetsArray[1]);
+        [self.displayView reloadData];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        NSLog(@"response error: %@", error);
+    }];
+
     self.displayView.dataSource = self;
     self.displayView.rowHeight = 130;
     
     [self.displayView registerNib:[UINib nibWithNibName:@"DisplayCellTableViewCell" bundle:nil] forCellReuseIdentifier: @"DisplayCellTableViewCell"];
     
     [self.displayView setDelegate:self];
+    
 }
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -95,6 +150,16 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.tweetsArray.count;
+    
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //NSDictionary *selTweet = [self.tweetsArray objectAtIndex:indexPath.row];
+    
+    Tweet *selTweet = [MTLJSONAdapter modelOfClass:Tweet.class fromJSONDictionary:self.tweetsArray[indexPath.row] error:NULL];
+    
+    NSLog(@"%@", selTweet.favouritesCount);
     
 }
 
@@ -137,57 +202,6 @@
     
     return displayCell;
     
-   /* self.yelpModel = [MTLJSONAdapter modelOfClass:YelpModel.class fromJSONDictionary:self.businesses[indexPath.row] error:NULL];
-    
-    DisplayCell *displayCell = [tableView dequeueReusableCellWithIdentifier:@"DisplayCell"];
-    
-    displayCell.nameLabel.text = [NSString stringWithFormat:@"%@. %@", index, self.yelpModel.name];
-    
-    displayCell.addressLabel.text = [NSString stringWithFormat:@"%@, %@", self.yelpModel.address, self.yelpModel.neighborhood];
-    displayCell.reviewCountLabel.text = [NSString stringWithFormat:@"%@ Reviews",self.yelpModel.reviewCount];
-    displayCell.categoryLabel.text = self.yelpModel.category;
-    //displayCell.mileLabel.text = @"1.0";
-    
-    //Asynchronously load the image
-    NSURL   *imageURL   = [NSURL URLWithString:self.yelpModel.imageURL];
-    NSURLRequest *request = [NSURLRequest requestWithURL:imageURL];
-    UIImage *placeholderImage; // = [UIImage imageNamed:@"yelp_placeholder.png"];
-    
-    __weak UITableViewCell *weakCell = displayCell;
-    
-    
-    [displayCell.thumbView setImageWithURLRequest:request
-                                 placeholderImage:placeholderImage
-                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                              
-                                              weakCell.imageView.image = image;
-                                              weakCell.imageView.layer.cornerRadius = 15.0;
-                                              weakCell.layer.masksToBounds = YES;
-                                              
-                                              [weakCell setNeedsLayout];
-                                              
-                                              
-                                          } failure:nil];
-    
-    NSURL   *ratingsURL   = [NSURL URLWithString:self.yelpModel.ratingImageURL];
-    NSURLRequest *requestRatingImage = [NSURLRequest requestWithURL:ratingsURL];
-    
-    //__weak UITableViewCell *weakCellRating = displayCell;
-    
-    
-    [displayCell.ratingView setImageWithURLRequest:requestRatingImage
-                                  placeholderImage:placeholderImage
-                                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                               
-                                               displayCell.ratingView.image = image;
-                                               //weakCellRating.imageView.image = image;
-                                               
-                                               [displayCell setNeedsLayout];
-                                               
-                                           } failure:nil];
-    
-    
-    return displayCell; */
 }
 
 @end

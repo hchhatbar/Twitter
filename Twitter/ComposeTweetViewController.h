@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface ComposeTweetViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UIImageView *thumbView;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *displayNameLabel;
+@property (weak, nonatomic) IBOutlet UITextView *tweetTextView;
 
 @end

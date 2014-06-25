@@ -17,4 +17,5 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *createdLabel;
 
+//@property (strong, nonatomic) Tweet *tweet;
 @end

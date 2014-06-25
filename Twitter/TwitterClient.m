@@ -7,6 +7,13 @@
 //
 
 #import "TwitterClient.h"
+#import <UIImageView+AFNetworking.h>
+#import <BDBOAuth1Manager/BDBOAuth1SessionManager.h>
+
+@interface TwitterClient()
+@property (nonatomic, readwrite) BDBOAuth1SessionManager *networkManager;
+
+@end
 
 @implementation TwitterClient
 
@@ -35,10 +42,46 @@
     }];
 }
 
+/*- (id)init
+{
+    self = [super init];
+    
+    NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/"];
+    
+    if (self) {
+        self.networkManager = [[BDBOAuth1SessionManager alloc] initWithBaseURL:url
+																   consumerKey:@"54A5GkfhEQnB6M2poGTEPF3MO"
+																consumerSecret:@"nCwqwbwPaCQbwiVDYvxYeRV0DisKctaocUhEPWKl6UfSoSIUWR"];
+    }
+    
+    return self;
+   
+}
+*/
+
+- (void)logOut{
+    
+	 [self deauthorize];
+}
+
 - (AFHTTPRequestOperation *)homeTimelineWithSuccess:(void (^) (AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^) (AFHTTPRequestOperation *operation, NSError *error))failure{
     return [self GET:@"1.1/statuses/home_timeline.json" parameters:nil success:success failure:failure];
     
 }
-                                                     
+
+
+
+- (AFHTTPRequestOperation *)updateStatus:(NSString *)parameter success:(void (^)(AFHTTPRequestOperation *operation, id response))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
+
+    return [self POST:@"1.1/statuses/update.json" parameters:@{@"status":parameter} success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)verifyCredentials:(void (^) (AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^) (AFHTTPRequestOperation *operation, NSError *error))failure{
+    
+    return [self GET:@"1.1/account/verify_credentials.json" parameters:nil success:success failure:failure];
+    
+}
+
 
 @end

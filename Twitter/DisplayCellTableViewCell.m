@@ -8,6 +8,11 @@
 
 #import "DisplayCellTableViewCell.h"
 
+@interface DisplayCellTableViewCell()
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageViewTopSpace;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *userLabelTopSpace;
+
+@end
 @implementation DisplayCellTableViewCell
 
 - (void)awakeFromNib
@@ -21,5 +26,13 @@
 
     // Configure the view for the selected state
 }
+/*
+- (void)setTweet: {
+ if (self.tweet.retwetted) {
+    
+ }
+ }
+
+*/
 
 @end

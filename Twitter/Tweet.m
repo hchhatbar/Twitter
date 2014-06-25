@@ -17,7 +17,10 @@
              @"name" : @"user.name",
              @"screenName" : @"user.screen_name",
              @"created" : @"created_at",
-             @"profileImageURL" : @"user.profile_image_url"
+             @"profileImageURL" : @"user.profile_image_url",
+             @"retweetCount" : @"retweet_count",
+             @"favouritesCount" : @"favorite_count",
+             @"isFavorite" : @"favorited"
              };
 }
 
@@ -48,48 +51,63 @@
 } */
 
 + (NSValueTransformer *)createdJSONTransformer {
-        return [MTLValueTransformer reversibleTransformerWithForwardBlock:^(NSString *str) {
-            NSLog(@"%@", @"date");
+    return [MTLValueTransformer reversibleTransformerWithForwardBlock:^(NSString *str) {
+        NSLog(@"%@", @"date");
+        NSLog(@"%@", str);
+        NSString *formattedDateString;
+        
+        
+        NSDateFormatter *dateFormatter= [NSDateFormatter new];
+        dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+        [dateFormatter setDateFormat:@"EEE MMM dd HH:mm:ss Z yyyy"];
+         //[dateFormatter setDateFormat:@"MM/dd/yyyy HH:mm"];
+        //[dateFormatter setDateFormat:@"MM/dd/yyyy hh:mm:ss a"];
+        //[dateFormatter setDateFormat:@"MM/dd/yyyy-hh:mm a"];
+        NSDate* dateOutput = [dateFormatter dateFromString:str];
+        
+        NSTimeInterval elapsedTimeInterval = [dateOutput timeIntervalSinceNow];
+        int elapsedSeconds = (int)(elapsedTimeInterval * -1);
+        
+        NSLog(@"%d", elapsedSeconds);
+        
+        if (elapsedSeconds < 60) {
+            formattedDateString = @"now";
+        }
+        else if (elapsedSeconds < 3600) {
+            int minutes = elapsedSeconds / 60;
+            formattedDateString = [NSString stringWithFormat:@"%dm", minutes];
+        }
+        else if (elapsedSeconds < 86400) {
+            int hours = elapsedSeconds / 3600;
+            formattedDateString = [NSString stringWithFormat:@"%dh", hours];
+        }
+        else if (elapsedSeconds < 31536000) {
+            int days = elapsedSeconds / 86400;
+            formattedDateString = [NSString stringWithFormat:@"%dd", days];
+        }
+        else {
+            int years = elapsedSeconds / 31536000;
+            formattedDateString = [NSString stringWithFormat:@"%dyr", years];
+        }
+        
+        NSLog(@"%@", formattedDateString);
+        return formattedDateString;
+        
+    } reverseBlock:^(NSString *date) {
+        return date;
+    }];
+}
+
+
+/*+ (NSValueTransformer *)favouritesCountJSONTransformer {
+        return [MTLValueTransformer reversibleTransformerWithBlock:^(NSString *str) {
+            //NSLog(@"%@", @"date");
             NSLog(@"%@", str);
-            NSString *formattedDateString;
             
+            return str;
             
-            NSDateFormatter *dateFormatter= [NSDateFormatter new];
-            dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-            [dateFormatter setDateFormat:@"EEE MMM dd HH:mm:ss Z yyyy"];
-            NSDate* dateOutput = [dateFormatter dateFromString:str];
-            
-            NSTimeInterval elapsedTimeInterval = [dateOutput timeIntervalSinceNow];
-            int elapsedSeconds = (int)(elapsedTimeInterval * -1);
-            
-            NSLog(@"%d", elapsedSeconds);
-            
-            if (elapsedSeconds < 60) {
-                formattedDateString = @"now";
-            }
-            else if (elapsedSeconds < 3600) {
-                int minutes = elapsedSeconds / 60;
-                formattedDateString = [NSString stringWithFormat:@"%dm", minutes];
-            }
-            else if (elapsedSeconds < 86400) {
-                int hours = elapsedSeconds / 3600;
-                formattedDateString = [NSString stringWithFormat:@"%dh", hours];
-            }
-            else if (elapsedSeconds < 31536000) {
-                int days = elapsedSeconds / 86400;
-                formattedDateString = [NSString stringWithFormat:@"%dd", days];
-            }
-            else {
-                int years = elapsedSeconds / 31536000;
-                formattedDateString = [NSString stringWithFormat:@"%dyr", years];
-            }
-            
-            NSLog(@"%@", formattedDateString);
-            return formattedDateString;
-            
-        } reverseBlock:^(NSString *date) {
-            return date;
         }];
-    }
+} 
+*/
 
 @end

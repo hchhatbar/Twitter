@@ -17,6 +17,8 @@
 @property(strong, nonatomic) NSString *screenName;
 @property(strong, nonatomic) NSString *created;
 @property(strong, nonatomic) NSString *profileImageURL;
-
+@property(strong, nonatomic) NSString *retweetCount;
+@property(strong, nonatomic) NSString *favouritesCount;
+@property(strong, nonatomic) NSString *isFavorite;
 
 @end
