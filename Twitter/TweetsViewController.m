@@ -13,6 +13,8 @@
 #import <UIImageView+AFNetworking.h>
 #import "ComposeTweetViewController.h"
 #import "LoginViewController.h"
+#import "TweetDetailViewController.h"
+#import <UIKit/UIKit.h>
 
 
 @interface TweetsViewController ()
@@ -22,6 +24,7 @@
 @property (nonatomic,strong) NSMutableArray *tweetInfo;
 @property TwitterClient *client;
 @property UIRefreshControl *refreshControl;
+@property NSString *tweetId;
 
 - (void)getTweets;
 
@@ -83,7 +86,7 @@
 }
 
 - (void)newTweetClickEvent: (id) sender {
-    NSLog(@"%@", @"New Tweet Pressed");
+    //NSLog(@"%@", @"New Tweet Pressed");
     
     ComposeTweetViewController *composeTweetViewController = [[ComposeTweetViewController alloc] init];
     
@@ -123,12 +126,8 @@
 -(void)getTweets{
     
     [self.client homeTimelineWithSuccess:^ (AFHTTPRequestOperation *operation, id responseObject){
-        NSLog(@"tweets table view controller");
-        NSLog(@"response: %@", responseObject);
         self.tweetsArray = responseObject;
-        //NSLog(@"array count: %d", [self.tweetsArray count]);
-        //NSLog(@"%@", self.tweetsArray[1]);
-        [self.displayView reloadData];
+                [self.displayView reloadData];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
         NSLog(@"response error: %@", error);
@@ -159,8 +158,49 @@
     
     Tweet *selTweet = [MTLJSONAdapter modelOfClass:Tweet.class fromJSONDictionary:self.tweetsArray[indexPath.row] error:NULL];
     
-    NSLog(@"%@", selTweet.favouritesCount);
+    NSLog(@"%ld", (long)selTweet.favouritesCount);
     
+    TweetDetailViewController *detailViewController = [[TweetDetailViewController alloc] initWithNibName:@"TweetDetailViewController" bundle:nil];
+    
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:detailViewController];
+    navigationController.navigationBar.barTintColor = [UIColor lightGrayColor];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:navigationController animated:YES completion: nil]; 
+    
+    
+    //[self.navigationController pushViewController:detailViewController animated:YES];
+
+
+    NSString *retweetCountString =  [NSString stringWithFormat:@"%d", selTweet.retweetCount];
+    NSString *favoriteCountString = [NSString stringWithFormat:@"%d", selTweet.favouritesCount];
+    BOOL isFavoriteBool = [selTweet.isFavorite boolValue];
+    
+    detailViewController.name = selTweet.name;
+    detailViewController.displayName = selTweet.screenName;
+    detailViewController.retweetedBy = selTweet.retweeted;
+    detailViewController.tweet = selTweet.text;
+    detailViewController.createdAt = selTweet.created;
+    detailViewController.retweetCount = retweetCountString;
+    detailViewController.favoriteCount = favoriteCountString;
+    detailViewController.imageURL = selTweet.profileImageURL;
+    detailViewController.isFavorite = isFavoriteBool;
+    detailViewController.tweetId = selTweet.tweetId;
+    
+}
+
+- (void)checkButtonTapped:(id)sender
+{
+    NSLog(@"clicked");
+    UIButton *button = (UIButton *)sender;
+    //int tweetIdInt = [button tag];
+    ComposeTweetViewController *composeTweetViewController = [[ComposeTweetViewController alloc] init];
+    
+    //composeTweetViewController.tweetId = [NSString stringWithFormat:@"%d",tweetIdInt];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:composeTweetViewController];
+    navigationController.navigationBar.barTintColor = [UIColor lightGrayColor];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self.navigationController presentViewController:navigationController animated:YES completion: nil];
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -169,13 +209,28 @@
     
     DisplayCellTableViewCell *displayCell = [tableView dequeueReusableCellWithIdentifier:@"DisplayCellTableViewCell"];
     
+    
     self.tweetModel = [MTLJSONAdapter modelOfClass:Tweet.class fromJSONDictionary:self.tweetsArray[indexPath.row] error:NULL];
+    NSLog(@" %@",self.tweetModel.isFavorite);
+    [displayCell.replyButton addTarget:self action:@selector(checkButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+
+    displayCell.replyButton.tag  = [self.tweetModel.tweetId intValue];
+    displayCell.tweetId = self.tweetModel.tweetId;
     displayCell.tweetLabel.text = self.tweetModel.text;
     displayCell.retweetLabel.text = self.tweetModel.retweeted;
     displayCell.createdLabel.text = self.tweetModel.created;
     displayCell.nameLabel.text =  [NSString stringWithFormat:@"%@ @%@", self.tweetModel.name, self.tweetModel.screenName ];
     
-    NSLog(@"name Label: %@", self.tweetModel.profileImageURL);
+    if(([self.tweetModel.isFavorite  isEqual: @"1"]))
+    {
+        displayCell.favoriteButton.selected = YES;
+    }
+    else
+        displayCell.favoriteButton.selected = NO;
+        
+
+    
+ //   NSLog(@"name Label: %@", self.tweetModel.profileImageURL);
 
     NSString *imgURL = [self.tweetModel.profileImageURL stringByReplacingOccurrencesOfString:@"_normal" withString:@"_bigger"];
     

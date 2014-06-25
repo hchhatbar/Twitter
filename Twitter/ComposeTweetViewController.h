@@ -14,4 +14,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *displayNameLabel;
 @property (weak, nonatomic) IBOutlet UITextView *tweetTextView;
 
+@property (nonatomic,strong) NSString *tweetId;
+
 @end

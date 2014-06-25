@@ -33,6 +33,10 @@
 		9FF1B4531958164D0043C883 /* ComposeTweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FF1B4511958164D0043C883 /* ComposeTweetViewController.xib */; };
 		9FF1B457195A66F40043C883 /* TweetDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FF1B455195A66F40043C883 /* TweetDetailViewController.m */; };
 		9FF1B458195A66F40043C883 /* TweetDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FF1B456195A66F40043C883 /* TweetDetailViewController.xib */; };
+		9FF1B45B195A6D640043C883 /* favorite.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FF1B45A195A6D640043C883 /* favorite.png */; };
+		9FF1B45D195A6D6C0043C883 /* reply.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FF1B45C195A6D6C0043C883 /* reply.png */; };
+		9FF1B45F195A6D720043C883 /* retweet.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FF1B45E195A6D720043C883 /* retweet.png */; };
+		9FF1B461195A6D8A0043C883 /* favorite_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FF1B460195A6D8A0043C883 /* favorite_on.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +87,10 @@
 		9FF1B454195A66F40043C883 /* TweetDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetDetailViewController.h; sourceTree = "<group>"; };
 		9FF1B455195A66F40043C883 /* TweetDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetDetailViewController.m; sourceTree = "<group>"; };
 		9FF1B456195A66F40043C883 /* TweetDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TweetDetailViewController.xib; sourceTree = "<group>"; };
+		9FF1B45A195A6D640043C883 /* favorite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = favorite.png; sourceTree = "<group>"; };
+		9FF1B45C195A6D6C0043C883 /* reply.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reply.png; sourceTree = "<group>"; };
+		9FF1B45E195A6D720043C883 /* retweet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = retweet.png; sourceTree = "<group>"; };
+		9FF1B460195A6D8A0043C883 /* favorite_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = favorite_on.png; sourceTree = "<group>"; };
 		AE4C7CA6F86E47AFA84894A4 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C26FFABC52E94D6EA6E273A1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -147,6 +155,7 @@
 		9F3C176819575260009D299B /* Twitter */ = {
 			isa = PBXGroup;
 			children = (
+				9FF1B459195A6D380043C883 /* Images */,
 				9F3C17AB1957C7C9009D299B /* Views */,
 				9F3C17A21957BA0C009D299B /* Models */,
 				9F3C179919576136009D299B /* ViewController */,
@@ -237,6 +246,17 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		9FF1B459195A6D380043C883 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				9FF1B460195A6D8A0043C883 /* favorite_on.png */,
+				9FF1B45E195A6D720043C883 /* retweet.png */,
+				9FF1B45C195A6D6C0043C883 /* reply.png */,
+				9FF1B45A195A6D640043C883 /* favorite.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -315,12 +335,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				9FF1B458195A66F40043C883 /* TweetDetailViewController.xib in Resources */,
+				9FF1B45D195A6D6C0043C883 /* reply.png in Resources */,
 				9F3C17AA1957BE8F009D299B /* TweetsViewController.xib in Resources */,
+				9FF1B461195A6D8A0043C883 /* favorite_on.png in Resources */,
 				9F3C176D19575260009D299B /* InfoPlist.strings in Resources */,
 				9F3C177519575261009D299B /* Images.xcassets in Resources */,
 				9FF1B4531958164D0043C883 /* ComposeTweetViewController.xib in Resources */,
+				9FF1B45F195A6D720043C883 /* retweet.png in Resources */,
 				9F3C17B01957C7EF009D299B /* DisplayCellTableViewCell.xib in Resources */,
 				9F3C179E19576158009D299B /* LoginViewController.xib in Resources */,
+				9FF1B45B195A6D640043C883 /* favorite.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

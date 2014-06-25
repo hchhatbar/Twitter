@@ -16,6 +16,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *createdLabel;
+@property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
+@property (strong, nonatomic) NSString *tweetId;
+@property (weak, nonatomic) IBOutlet UIButton *replyButton;
+
+- (IBAction)replyClick:(id)sender;
+- (IBAction)retweetClick:(id)sender;
+- (IBAction)favoriteClick:(id)sender;
+
+
 
 //@property (strong, nonatomic) Tweet *tweet;
 @end

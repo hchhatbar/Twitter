@@ -20,7 +20,8 @@
              @"profileImageURL" : @"user.profile_image_url",
              @"retweetCount" : @"retweet_count",
              @"favouritesCount" : @"favorite_count",
-             @"isFavorite" : @"favorited"
+             @"isFavorite" : @"favorited",
+             @"tweetId" : @"id"
              };
 }
 

@@ -71,16 +71,33 @@
 
 
 
-- (AFHTTPRequestOperation *)updateStatus:(NSString *)parameter success:(void (^)(AFHTTPRequestOperation *operation, id response))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+- (AFHTTPRequestOperation *)updateStatus:(NSString *)parameter :(NSString *)tweetId success:(void (^)(AFHTTPRequestOperation *operation, id response))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
 {
 
+    if([tweetId length] == 0)
+    {
     return [self POST:@"1.1/statuses/update.json" parameters:@{@"status":parameter} success:success failure:failure];
+    }
+    else
+     return [self POST:@"1.1/statuses/update.json" parameters:@{@"status":parameter, @"in_reply_to_status_id":tweetId} success:success failure:failure];
 }
 
 - (AFHTTPRequestOperation *)verifyCredentials:(void (^) (AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^) (AFHTTPRequestOperation *operation, NSError *error))failure{
     
     return [self GET:@"1.1/account/verify_credentials.json" parameters:nil success:success failure:failure];
     
+}
+
+- (AFHTTPRequestOperation *)retweet:(NSString *)parameter success:(void (^)(AFHTTPRequestOperation *operation, id response))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
+    NSString *url = [NSString stringWithFormat:@"%@%@%@", @"1.1/statuses/retweet/", parameter, @".json"];
+    return [self POST:url parameters:nil success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)favorite:(NSString *)parameter success:(void (^)(AFHTTPRequestOperation *operation, id response))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
+
+    return [self POST:@"1.1/favorites/create.json" parameters:@{@"id":parameter} success:success failure:failure];
 }
 
 

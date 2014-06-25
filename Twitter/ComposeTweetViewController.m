@@ -75,9 +75,9 @@
     
     //[self.navigationController popToRootViewControllerAnimated:YES];
     
-    NSLog(@" %@",self.tweetTextView.text);
+    NSLog(@" %@",self.tweetId);
     TwitterClient *client = [TwitterClient instance];
-    [client updateStatus:self.tweetTextView.text  success:^(AFHTTPRequestOperation *operation, id responseObject){
+    [client updateStatus:self.tweetTextView.text :self.tweetId success:^(AFHTTPRequestOperation *operation, id responseObject){
         
         NSLog(@"response: %@", responseObject);
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -96,6 +96,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@" %@", self.tweetId);
     // Do any additional setup after loading the view from its nib.
     [self.client verifyCredentials:^ (AFHTTPRequestOperation *operation, id responseObject){
         
