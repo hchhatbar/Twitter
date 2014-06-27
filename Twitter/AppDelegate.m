@@ -96,7 +96,9 @@
                     
                     TweetsViewController *tweetsViewController = [[TweetsViewController alloc] init];
                     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tweetsViewController];
-                    navigationController.navigationBar.barTintColor = [UIColor lightGrayColor];
+                    
+                    UIColor *color = [self getUIColorObjectFromHexString:@"4099FF" alpha:.9];
+                    navigationController.navigationBar.barTintColor = color;
                     
                     self.window.rootViewController = navigationController;
                     
@@ -115,5 +117,37 @@
     }
     return NO;
 }
+
+- (unsigned int)intFromHexString:(NSString *)hexStr
+{
+    unsigned int hexInt = 0;
+    
+    // Create scanner
+    NSScanner *scanner = [NSScanner scannerWithString:hexStr];
+    
+    // Tell scanner to skip the # character
+    [scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@"#"]];
+    
+    // Scan hex value
+    [scanner scanHexInt:&hexInt];
+    
+    return hexInt;
+}
+
+- (UIColor *)getUIColorObjectFromHexString:(NSString *)hexStr alpha:(CGFloat)alpha
+{
+    // Convert hex string to an integer
+    unsigned int hexint = [self intFromHexString:hexStr];
+    
+    // Create color object, specifying alpha as well
+    UIColor *color =
+    [UIColor colorWithRed:((CGFloat) ((hexint & 0xFF0000) >> 16))/255
+                    green:((CGFloat) ((hexint & 0xFF00) >> 8))/255
+                     blue:((CGFloat) (hexint & 0xFF))/255
+                    alpha:alpha];
+    
+    return color;
+}
+
 
 @end

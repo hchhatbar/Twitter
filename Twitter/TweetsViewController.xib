@@ -24,9 +24,13 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="bni-VK-1Vp" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="1CP-zv-ZiH"/>
+                <constraint firstItem="bni-VK-1Vp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="1Wh-Vh-PLl"/>
+                <constraint firstAttribute="bottom" secondItem="bni-VK-1Vp" secondAttribute="bottom" id="DRd-nU-tzV"/>
                 <constraint firstAttribute="bottom" secondItem="bni-VK-1Vp" secondAttribute="bottom" id="QN7-Dm-YPE"/>
                 <constraint firstAttribute="trailing" secondItem="bni-VK-1Vp" secondAttribute="trailing" id="Xah-3l-Uet"/>
                 <constraint firstItem="bni-VK-1Vp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="g05-cW-63G"/>
+                <constraint firstAttribute="trailing" secondItem="bni-VK-1Vp" secondAttribute="trailing" id="rxl-lp-2b3"/>
+                <constraint firstItem="bni-VK-1Vp" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="xfq-vb-2YJ"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>

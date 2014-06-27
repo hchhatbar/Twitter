@@ -91,7 +91,9 @@
     ComposeTweetViewController *composeTweetViewController = [[ComposeTweetViewController alloc] init];
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:composeTweetViewController];
-    navigationController.navigationBar.barTintColor = [UIColor lightGrayColor];
+
+    UIColor *color = [self getUIColorObjectFromHexString:@"4099FF" alpha:.9];
+    navigationController.navigationBar.barTintColor = color;
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentViewController:navigationController animated:YES completion: nil];
     
@@ -134,7 +136,7 @@
     }];
 
     self.displayView.dataSource = self;
-    self.displayView.rowHeight = 130;
+    self.displayView.rowHeight = 120;
     
     [self.displayView registerNib:[UINib nibWithNibName:@"DisplayCellTableViewCell" bundle:nil] forCellReuseIdentifier: @"DisplayCellTableViewCell"];
     
@@ -152,6 +154,37 @@
     
 }
 
+- (unsigned int)intFromHexString:(NSString *)hexStr
+{
+    unsigned int hexInt = 0;
+    
+    // Create scanner
+    NSScanner *scanner = [NSScanner scannerWithString:hexStr];
+    
+    // Tell scanner to skip the # character
+    [scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@"#"]];
+    
+    // Scan hex value
+    [scanner scanHexInt:&hexInt];
+    
+    return hexInt;
+}
+
+- (UIColor *)getUIColorObjectFromHexString:(NSString *)hexStr alpha:(CGFloat)alpha
+{
+    // Convert hex string to an integer
+    unsigned int hexint = [self intFromHexString:hexStr];
+    
+    // Create color object, specifying alpha as well
+    UIColor *color =
+    [UIColor colorWithRed:((CGFloat) ((hexint & 0xFF0000) >> 16))/255
+                    green:((CGFloat) ((hexint & 0xFF00) >> 8))/255
+                     blue:((CGFloat) (hexint & 0xFF))/255
+                    alpha:alpha];
+    
+    return color;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //NSDictionary *selTweet = [self.tweetsArray objectAtIndex:indexPath.row];
@@ -164,7 +197,10 @@
     
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:detailViewController];
-    navigationController.navigationBar.barTintColor = [UIColor lightGrayColor];
+     //[self colorWithHexString:@"FFFFFF"]
+    
+    UIColor *color = [self getUIColorObjectFromHexString:@"4099FF" alpha:.9];
+    navigationController.navigationBar.barTintColor = color;
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentViewController:navigationController animated:YES completion: nil]; 
     
@@ -193,12 +229,16 @@
 {
     NSLog(@"clicked");
     UIButton *button = (UIButton *)sender;
-    //int tweetIdInt = [button tag];
+    int tweetIdInt = [button tag];
+   
+    Tweet *model = [MTLJSONAdapter modelOfClass:Tweet.class fromJSONDictionary:self.tweetsArray[tweetIdInt] error:NULL];
+    
     ComposeTweetViewController *composeTweetViewController = [[ComposeTweetViewController alloc] init];
     
-    //composeTweetViewController.tweetId = [NSString stringWithFormat:@"%d",tweetIdInt];
+    composeTweetViewController.tweetId = model.tweetId;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:composeTweetViewController];
-    navigationController.navigationBar.barTintColor = [UIColor lightGrayColor];
+    UIColor *color = [self getUIColorObjectFromHexString:@"4099FF" alpha:.9];
+    navigationController.navigationBar.barTintColor = color;
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self.navigationController presentViewController:navigationController animated:YES completion: nil];
 }
@@ -211,13 +251,20 @@
     
     
     self.tweetModel = [MTLJSONAdapter modelOfClass:Tweet.class fromJSONDictionary:self.tweetsArray[indexPath.row] error:NULL];
-    NSLog(@" %@",self.tweetModel.isFavorite);
+    NSLog(@" %@",self.tweetModel.retweeted);
     [displayCell.replyButton addTarget:self action:@selector(checkButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-
-    displayCell.replyButton.tag  = [self.tweetModel.tweetId intValue];
+    if ([self.tweetModel.retweeted length] == 0 )
+    {
+        displayCell.retweetHeight.constant = 0.0f;
+        displayCell.topHeight.constant = 0.0f;
+        displayCell.retweetImageView.hidden = YES;
+    }
+    else
+    displayCell.retweetLabel.text = self.tweetModel.retweeted;
+    displayCell.replyButton.tag  = indexPath.row;
     displayCell.tweetId = self.tweetModel.tweetId;
     displayCell.tweetLabel.text = self.tweetModel.text;
-    displayCell.retweetLabel.text = self.tweetModel.retweeted;
+    
     displayCell.createdLabel.text = self.tweetModel.created;
     displayCell.nameLabel.text =  [NSString stringWithFormat:@"%@ @%@", self.tweetModel.name, self.tweetModel.screenName ];
     
