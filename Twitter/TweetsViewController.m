@@ -267,8 +267,12 @@
     
     displayCell.createdLabel.text = self.tweetModel.created;
     displayCell.nameLabel.text =  [NSString stringWithFormat:@"%@ @%@", self.tweetModel.name, self.tweetModel.screenName ];
-    
-    if(([self.tweetModel.isFavorite  isEqual: @"1"]))
+    NSLog(@" %@",self.tweetModel.isFavorite);
+    NSString *isFav = self.tweetModel.isFavorite;
+    NSLog(@"%@", isFav);
+    BOOL flag = [self.tweetModel.isFavorite boolValue];
+    NSLog(flag ? @"Yes" : @"No");
+    if(flag)
     {
         displayCell.favoriteButton.selected = YES;
     }
