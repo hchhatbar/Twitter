@@ -13,7 +13,7 @@ Time Spent: 25 hours
   * Home Timeline
      * Tapping on a user image should bring up that user's profile page
      
-![Alt text](https://raw.githubusercontent.com/hchhatbar/Twitter/master/Twitter/twitter_redux_gif.gif "Twitter")
+![Alt text](https://raw.githubusercontent.com/hchhatbar/Twitter/master/Twitter/twitter_redux_gif%20copy.gif "Twitter")
 
 Time Spent: 20 hours
 
