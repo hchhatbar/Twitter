@@ -1,5 +1,19 @@
 Twitter
 =======
+Time Spent: 25 hours
+* Required
+  * Hamburger menu
+     * Dragging anywhere in the view reveals the menu.
+     * The menu includes links to your profile, the home timeline, and the mentions view.
+     
+  * Profile page
+     * Contains the user header view
+     * Contains a section with the users basic stats: # tweets, # following, # followers
+ 
+  * Home Timeline
+     * Tapping on a user image should bring up that user's profile page
+     
+![Alt text](https://raw.githubusercontent.com/hchhatbar/Twitter/master/Twitter/twitter_redux_gif.gif "Twitter")
 
 Time Spent: 20 hours
 
