@@ -60,19 +60,6 @@
     button.layer.cornerRadius = 4.0f;
     [self.navigationController.view addSubview:button];
     
-    /*
-    UIButton *logOutButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [logOutButton setFrame:CGRectMake(25,20,75,40)];
-    [logOutButton setTitle:@"Sign Out" forState:UIControlStateNormal];
-    [logOutButton setTintColor:[UIColor redColor]];
-    [logOutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [logOutButton addTarget:self action:@selector(logOutClickEvent:) forControlEvents:UIControlEventTouchUpInside];
-    logOutButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-    logOutButton.layer.borderColor = [UIColor clearColor].CGColor;
-    logOutButton.layer.borderWidth = 1.0f;
-    logOutButton.layer.cornerRadius = 4.0f;
-    [self.navigationController.view addSubview:logOutButton];*/
-    
     
 }
 
@@ -326,41 +313,40 @@
                                               
                                           } failure:nil];
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(myTapMethod:)];
-    displayCell.tag = indexPath.row;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(profileImagTap:)];
+    
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
     [displayCell.thumbView addGestureRecognizer:tap];
+    displayCell.thumbView.tag = indexPath.row;
     
     return displayCell;
     
 }
-- (void)myTapMethod:(UITapGestureRecognizer *)recognizer
+- (void)profileImagTap:(id)recognizer
 {
-    NSLog(@"TAP %ld", (long)recognizer.view.tag);
+    UIGestureRecognizer *gesture = (UIGestureRecognizer *)recognizer;
     
-    //NSInteger *intTag = [(UIGestureRecognizer *)recognizer view].tag;
+    NSLog(@"TAP Index %ld", (long)gesture.view.tag);
     
-    TimeLineViewController *tvc = [[TimeLineViewController alloc] init];
+    TimeLineViewController *tvc = [[TimeLineViewController alloc] initWithNibName:@"TimeLineViewController" bundle:nil];
      tvc.userProfile = @"userprofile";
 
-    //int tweetIdInt = recognizer.view.tag;
-    
     Tweet *model = [MTLJSONAdapter modelOfClass:Tweet.class fromJSONDictionary:self.tweetsArray[[(UIGestureRecognizer *)recognizer view].tag] error:NULL];
     
-   tvc.userName = model.name;
-    
-     [self addChildViewController:tvc];
-     //[self.contentView addSubview:viewController.view];
-     //self.navBar.view.frame = self.menuVIew.frame;
-     [self.view addSubview:tvc.view];
+   tvc.userName = model.screenName;
     
     
-    //UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tvc];
-    //UIColor *color = [self getUIColorObjectFromHexString:@"4099FF" alpha:.9];
-    //navigationController.navigationBar.barTintColor = color;
-    //navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    //[self.navigationController presentViewController:navigationController animated:YES completion: nil];
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tvc];
+    //[self colorWithHexString:@"FFFFFF"]
+    
+    UIColor *color = [self getUIColorObjectFromHexString:@"4099FF" alpha:.9];
+    navigationController.navigationBar.barTintColor = color;
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:navigationController animated:YES completion: nil];
+    
+
 }
 
 @end

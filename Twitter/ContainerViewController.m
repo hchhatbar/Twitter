@@ -105,52 +105,6 @@
     self.navBar = self.viewControllers[4];
     
     
-    /*UIView *firstView = self.tvc.view;
-    firstView.frame = self.containerView.frame;
-    
-    UIView *secondView = self.mvc.view;
-    secondView.frame = self.containerView.frame;
-    
-    UIView *mentionsView = self.mentionsVC.view;
-    mentionsView.frame = self.containerView.frame;
-    
-    UIView *profileView = self.timeLineVC.view;
-    profileView.frame = self.containerView.frame;*/
-    
-    
-    //[self.containerView addSubview:profileView];
-    //[self.containerView addSubview:mentionsView];
-
-    //[self.containerView addSubview: secondView];
-    //[self.containerView addSubview: firstView];
-    
-    
-    //[self.containerView addSubview: navigationController.view];
-
-    //[self.tvc didMoveToParentViewController:self];
-    
-    /*[self addChildViewController:self.mvc];
-    [self.containerView addSubview: self.mvc.view];
-    
-    [self addChildViewController:self.navBar];
-    [self.containerView addSubview:self.navBar.view];         //  2
-    
-    [self.navBar didMoveToParentViewController:self];
-    [self.mvc didMoveToParentViewController:self];*/
-    
-
-    // Add the initial ContentController (this is the timeline controller with navigation controller
-   /* [self addChildViewController:self.navBar];
-    self.navBar.view.frame = self.contentView.frame;
-    [self.contentView addSubview:self.navBar.view];
-    [self.navBar didMoveToParentViewController:self];
-
-    // Add sidebar Menu controller
-    [self addChildViewController:self.mvc];
-    self.mvc.view.frame = self.menuVIew.frame;
-    [self.menuVIew addSubview:self.mvc.view];
-    [self.mvc didMoveToParentViewController:self]; */
-    
     [self addChildViewController:self.navBar];
      self.navBar.view.frame = self.menuVIew.frame;
      [self.menuVIew addSubview:self.navBar.view];

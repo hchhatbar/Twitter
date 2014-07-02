@@ -46,7 +46,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    if([self.userProfile isEqual:@"userprofile"]){
+    if([self.userProfile isEqual:@"userprofile"])
+    {
         [self.client userProfile:self.userName  success:^(AFHTTPRequestOperation *operation, id responseObject){
             
             //NSLog(@"response: %@", responseObject);
@@ -66,6 +67,7 @@
             
             NSData *backgroundImageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:userStat.backgroundImageURL]];
             self.backgroundView.image =[UIImage imageWithData:backgroundImageData];
+             [self addHomeButton];
             [self.displayView reloadData];
             
             
@@ -114,6 +116,33 @@
 
 }
 
+- (void)addHomeButton
+{
+    
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [button setFrame:CGRectMake(10,20,60,40)];
+    [button setTitle:@"Home" forState:UIControlStateNormal];
+    [button setTintColor:[UIColor redColor]];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(homeClickEvent:) forControlEvents:UIControlEventTouchUpInside];
+    button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+    button.layer.borderColor = [UIColor clearColor].CGColor;
+    button.layer.borderWidth = 1.0f;
+    button.layer.cornerRadius = 4.0f;
+    [self.navigationController.view addSubview:button];
+    
+
+    
+    
+}
+
+- (void)homeClickEvent: (id) sender {
+   
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -123,20 +152,7 @@
 - (void)checkButtonTapped:(id)sender
 {
     NSLog(@"clicked");
-    /*UIButton *button = (UIButton *)sender;
-    int tweetIdInt = [button tag];
-    
-    Tweet *model = [MTLJSONAdapter modelOfClass:Tweet.class fromJSONDictionary:self.tweetsArray[tweetIdInt] error:NULL];
-    
-    ComposeTweetViewController *composeTweetViewController = [[ComposeTweetViewController alloc] init];
-    
-    composeTweetViewController.tweetId = model.tweetId;
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:composeTweetViewController];
-    UIColor *color = [self getUIColorObjectFromHexString:@"4099FF" alpha:.9];
-    navigationController.navigationBar.barTintColor = color;
-    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self.navigationController presentViewController:navigationController animated:YES completion: nil]; */
-}
+   }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.tweetsArray.count;
