@@ -8,13 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DisplayCellTableViewCell : UITableViewCell
+@interface DisplayCellTableViewCell : UITableViewCell<UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *tweetLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *thumbView;
 @property (weak, nonatomic) IBOutlet UILabel *retweetLabel;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *retweetImageView;
+@property (weak, nonatomic) IBOutlet UIButton *retweetButton;
 
 @property (weak, nonatomic) IBOutlet UILabel *createdLabel;
 @property (weak, nonatomic) IBOutlet UIButton *favoriteButton;

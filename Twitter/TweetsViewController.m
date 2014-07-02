@@ -14,6 +14,7 @@
 #import "ComposeTweetViewController.h"
 #import "LoginViewController.h"
 #import "TweetDetailViewController.h"
+#import "TimeLineViewController.h"
 #import <UIKit/UIKit.h>
 
 
@@ -45,7 +46,7 @@
 }
 - (void)addNewTweetButton
 {
-
+    
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [button setFrame:CGRectMake(250,20,50,40)];
@@ -59,7 +60,7 @@
     button.layer.cornerRadius = 4.0f;
     [self.navigationController.view addSubview:button];
     
-    
+    /*
     UIButton *logOutButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [logOutButton setFrame:CGRectMake(25,20,75,40)];
     [logOutButton setTitle:@"Sign Out" forState:UIControlStateNormal];
@@ -70,7 +71,7 @@
     logOutButton.layer.borderColor = [UIColor clearColor].CGColor;
     logOutButton.layer.borderWidth = 1.0f;
     logOutButton.layer.cornerRadius = 4.0f;
-    [self.navigationController.view addSubview:logOutButton];
+    [self.navigationController.view addSubview:logOutButton];*/
     
     
 }
@@ -103,6 +104,7 @@
 
 - (void)viewDidLoad
 {
+    NSLog(@"%@", @"view did load");
     [super viewDidLoad];
     UITableViewController *tableViewController = [[UITableViewController alloc] init];
     tableViewController.tableView = self.displayView;
@@ -127,14 +129,30 @@
 
 -(void)getTweets{
     
-    [self.client homeTimelineWithSuccess:^ (AFHTTPRequestOperation *operation, id responseObject){
+    if([self.testProp isEqual:@"hometimeline"])
+    {
+        [self.client homeTimelineWithSuccess:^ (AFHTTPRequestOperation *operation, id responseObject){
+            //NSLog(@"response: %@", responseObject);
+            self.tweetsArray = responseObject;
+            [self.displayView reloadData];
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            NSLog(@"response error: %@", error);
+        }];
+        
+    }
+    else{
+        
+    
+    
+    [self.client mentions:^ (AFHTTPRequestOperation *operation, id responseObject){
         self.tweetsArray = responseObject;
                 [self.displayView reloadData];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
         NSLog(@"response error: %@", error);
     }];
-
+}
     self.displayView.dataSource = self;
     self.displayView.rowHeight = 120;
     
@@ -293,6 +311,8 @@
     __weak UITableViewCell *weakCell = displayCell;
     
     
+    
+    
     [displayCell.thumbView setImageWithURLRequest:request
                                  placeholderImage:placeholderImage
                                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -306,8 +326,41 @@
                                               
                                           } failure:nil];
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(myTapMethod:)];
+    displayCell.tag = indexPath.row;
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [displayCell.thumbView addGestureRecognizer:tap];
+    
     return displayCell;
     
+}
+- (void)myTapMethod:(UITapGestureRecognizer *)recognizer
+{
+    NSLog(@"TAP %ld", (long)recognizer.view.tag);
+    
+    //NSInteger *intTag = [(UIGestureRecognizer *)recognizer view].tag;
+    
+    TimeLineViewController *tvc = [[TimeLineViewController alloc] init];
+     tvc.userProfile = @"userprofile";
+
+    //int tweetIdInt = recognizer.view.tag;
+    
+    Tweet *model = [MTLJSONAdapter modelOfClass:Tweet.class fromJSONDictionary:self.tweetsArray[[(UIGestureRecognizer *)recognizer view].tag] error:NULL];
+    
+   tvc.userName = model.name;
+    
+     [self addChildViewController:tvc];
+     //[self.contentView addSubview:viewController.view];
+     //self.navBar.view.frame = self.menuVIew.frame;
+     [self.view addSubview:tvc.view];
+    
+    
+    //UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tvc];
+    //UIColor *color = [self getUIColorObjectFromHexString:@"4099FF" alpha:.9];
+    //navigationController.navigationBar.barTintColor = color;
+    //navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    //[self.navigationController presentViewController:navigationController animated:YES completion: nil];
 }
 
 @end

@@ -13,9 +13,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="178"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rab-kT-cKJ">
+                    <imageView multipleTouchEnabled="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rab-kT-cKJ">
                         <rect key="frame" x="5" y="20" width="50" height="30"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="NH3-ey-6dX"/>
                             <constraint firstAttribute="width" constant="50" id="gGD-i8-RUP"/>
@@ -124,12 +125,14 @@
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.62283224120000003" green="0.75978438540000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <gestureRecognizers/>
             <connections>
                 <outlet property="createdLabel" destination="CO5-g7-tIb" id="BIP-a4-I4v"/>
                 <outlet property="favoriteButton" destination="u3q-r0-bHg" id="eQm-CQ-3e2"/>
                 <outlet property="imageViewTopSpace" destination="qPI-lQ-mc4" id="Y5c-Nf-0IR"/>
                 <outlet property="nameLabel" destination="idz-sE-ST6" id="iWd-wa-5n5"/>
                 <outlet property="replyButton" destination="UGi-fl-NIr" id="vxC-ro-DrA"/>
+                <outlet property="retweetButton" destination="zez-2d-NtA" id="SQ5-WY-05o"/>
                 <outlet property="retweetHeight" destination="8Bc-jJ-f1R" id="oYq-zn-Scc"/>
                 <outlet property="retweetImageView" destination="qcz-Gg-4da" id="9ca-Gg-jKU"/>
                 <outlet property="retweetLabel" destination="pbS-oa-peP" id="OBG-VT-aKf"/>

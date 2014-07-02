@@ -10,4 +10,5 @@
 
 @interface TweetsViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 
+@property NSString *testProp;
 @end

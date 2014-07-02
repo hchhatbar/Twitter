@@ -10,6 +10,9 @@
 #import "LoginViewController.h"
 #import "TwitterClient.h"
 #import "TweetsViewController.h"
+#import "MenuViewController.h"
+#import "ContainerViewController.h"
+#import "TimeLineViewController.h"
 
 @implementation NSURL (dictionaryFromQueryString)
 
@@ -93,14 +96,29 @@
                     
                     //[client homeTimelineWithSuccess:^ (AFHTTPRequestOperation *operation, id responseObject){
                     //    NSLog(@"response: %@", responseObject);
+                    ContainerViewController *containerViewController = [[ContainerViewController alloc] init];
+                    MenuViewController *menuViewController = [[MenuViewController alloc] init];
                     
                     TweetsViewController *tweetsViewController = [[TweetsViewController alloc] init];
-                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tweetsViewController];
+                    tweetsViewController.testProp = @"hometimeline";
                     
+                    TweetsViewController *mentionsViewController = [[TweetsViewController alloc] init];
+                    
+                    TimeLineViewController *timeLineViewController = [[TimeLineViewController alloc] init];
+                   
+                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tweetsViewController];
                     UIColor *color = [self getUIColorObjectFromHexString:@"4099FF" alpha:.9];
                     navigationController.navigationBar.barTintColor = color;
                     
-                    self.window.rootViewController = navigationController;
+                    [containerViewController addViewController:timeLineViewController];
+                    [containerViewController addViewController:tweetsViewController];
+                    [containerViewController addViewController:menuViewController];
+                    [containerViewController addViewController:mentionsViewController];
+                    [containerViewController addViewController:navigationController];
+                    
+                    self.window.rootViewController = containerViewController; //navigationController;
+                    
+                    //self.window
                     
                     //} failure:^(AFHTTPRequestOperation *operation, NSError *error){
                     //    NSLog(@"response error: %@", error);

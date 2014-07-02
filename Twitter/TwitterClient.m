@@ -69,6 +69,22 @@
     
 }
 
+- (AFHTTPRequestOperation *)userTimeLine:(void (^) (AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^) (AFHTTPRequestOperation *operation, NSError *error))failure{
+    return [self GET:@"1.1/statuses/user_timeline.json" parameters:nil success:success failure:failure];
+  
+}
+
+- (AFHTTPRequestOperation *)userProfile:(NSString *)parameter success:(void (^)(AFHTTPRequestOperation *operation, id response))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
+     NSDictionary *parameters = @{@"screen_name": parameter}; //, @"location" : @"San Francisco"};
+    return [self GET:@"1.1/statuses/user_timeline.json" parameters:parameters success:success failure:failure];
+    
+}
+
+- (AFHTTPRequestOperation *)mentions:(void (^) (AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^) (AFHTTPRequestOperation *operation, NSError *error))failure{
+    return [self GET:@"1.1/statuses/mentions_timeline.json" parameters:nil success:success failure:failure];
+    //return [self GET:@"1.1/users/show.json" parameters:@{@"screen_name":@"tasveer"}  success:success failure:failure];
+}
 
 
 - (AFHTTPRequestOperation *)updateStatus:(NSString *)parameter :(NSString *)tweetId success:(void (^)(AFHTTPRequestOperation *operation, id response))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure

@@ -12,6 +12,7 @@
 @interface LoginViewController ()
 
 - (IBAction)onLoginButton:(id)sender;
+@property (weak, nonatomic) IBOutlet UIImageView *twitterImageView;
 
 @end
 
@@ -39,7 +40,15 @@
 }
 
 - (IBAction)onLoginButton:(id)sender {
-    [[TwitterClient instance] login];
-    
+    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState animations:^{
+        //self.twitterImageView.center = CGPointMake(self.twitterImageView.ce,
+        //self.twitterImageView.transform = CGAffineTransformMakeScale(2,2);
+        self.twitterImageView.center = CGPointMake(self.twitterImageView.center.x + 150, self.twitterImageView.center.y - 250);
+        
+    } completion:^(BOOL finished) {
+        [[TwitterClient instance] login];
+
+    }];
+     
 }
 @end

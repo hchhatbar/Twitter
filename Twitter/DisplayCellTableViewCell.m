@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageViewTopSpace;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *userLabelTopSpace;
 
+
 @end
 @implementation DisplayCellTableViewCell
 
@@ -74,4 +75,5 @@
     }];
 
 }
+
 @end
